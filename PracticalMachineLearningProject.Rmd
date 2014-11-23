@@ -1,19 +1,22 @@
 ---
-title: "PracticalMachineLearningProject"
-output: html_document
+title: "Practical Machine Learning Project"
+output: 
+  html_document:
+    keep_md: true
 ---
 
-# Executive Summary
+## Executive Summary
 The goal of this project is to predict the manner in which the participants did the exercise. I have used random forest method to build the model and used cross validation to confirm the effectiveness of the random forest model. The sample error is very small and based on this model, I have managed to predict all the 20 different test cases correctly.
 
-# Loading libraries
+## Loading libraries
 ```{r, echo=TRUE, warning=FALSE}
+library(knitr)
 library(caret)
 library(randomForest)
 set.seed(999)
 ```
 
-# Reading and Cleaning Data
+## Reading and Cleaning Data
 I first read the training data from the files and split the data into training and testing sets. The data is cleaned by removing the incomplete columns as well as the first seven columns that are not used as predictors.
 ```{r, echo=TRUE}
 trainingData<-read.csv("pml-training.csv", na.strings=c("#DIV/0!"," ", "NA"))
@@ -24,14 +27,14 @@ training<-trainingData[inTrain,]
 testing<-trainingData[-inTrain,]
 ```
 
-# Model Building 
+## Model Building 
 I build the model using the random forest method.The out of sample error rate is estimated to be 0.63%.
 ```{r, echo=TRUE}
 modelFit<-randomForest(classe ~ ., data=training)
 modelFit
 ```
 
-# Cross validation
+## Cross validation
 I validate the random forest model on the testing data set. The accuracy is 99.32% with the sample error very small at 0.68%. This sample error is very close to the estimated sample error rate of 0.63%.
 ```{r, echo=TRUE}
 predictions<-predict(modelFit, newdata=testing)
@@ -59,5 +62,5 @@ pml_write_files = function(x){
 pml_write_files(predictions)
 ```
 
-# Conclusion
+## Conclusion
 The random forest machine learning method is very good for the problem in this project. It gives very low error.
